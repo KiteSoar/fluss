@@ -67,7 +67,7 @@ public class TableLookup implements Lookup {
     public Lookuper createLookuper() {
         if (lookupColumnNames == null || isPrimaryKey(lookupColumnNames)) {
             return new PrimaryKeyLookuper(tableInfo, schemaGetter, metadataUpdater, lookupClient);
-        }  
+        }
 
         if (isPrefixKey(lookupColumnNames)) {
             return new PrefixKeyLookuper(
@@ -94,24 +94,24 @@ public class TableLookup implements Lookup {
         if (!tableInfo.hasPrimaryKey()) {
             return false;
         }
-        
+
         List<String> physicalLookupColumns =
                 lookupColumns.stream()
                         .filter(col -> !tableInfo.getPartitionKeys().contains(col))
                         .collect(Collectors.toList());
-        
+
         List<String> physicalPrimaryKeys = tableInfo.getPhysicalPrimaryKeys();
-        
+
         if (physicalLookupColumns.isEmpty() || physicalLookupColumns.size() >= physicalPrimaryKeys.size()) {
             return false;
         }
-        
+
         for (int i = 0; i < physicalLookupColumns.size(); i++) {
             if (!physicalLookupColumns.get(i).equals(physicalPrimaryKeys.get(i))) {
                 return false;
             }
         }
-        
+
         return true;
     }
 
